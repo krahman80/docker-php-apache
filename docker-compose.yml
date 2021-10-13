@@ -13,7 +13,8 @@ services:
       - ./project:/var/www/html
       - ./docker/server/apache/sites-enabled:/etc/apache2/sites-enabled
       - ./docker/server/php/php.ini:/usr/local/etc/php/conf.d/extra-php-config.ini
-    
+      - ./docker/server/php/opcache.ini:/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+
   maria-db:
     image: mariadb:10.5.9
     container_name: 'maria-db'
@@ -26,9 +27,9 @@ services:
       MYSQL_PASSWORD: 'secret'
       MYSQL_DATABASE: 'homestead'
     volumes:
-      # - db_data:/var/lib/mysql
-      - './docker/db/db_data:/var/lib/mysql'
+      - db_data:/var/lib/mysql
+      # - './docker/db/db_data:/var/lib/mysql'
       - ./docker/db/mariadb/my.cnf:/etc/mysql/conf.d/my.cnf
 
-# volumes:
-#   db_data:
+volumes:
+  db_data:
