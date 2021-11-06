@@ -10,3 +10,6 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 # RUN install-php-extensions gd pdo_mysql bcmath zip intl opcache
 RUN install-php-extensions bcmath gettext mbstring mysqli pdo pdo_mysql zip opcache
 COPY --from=composer:2.0 /usr/bin/composer /usr/local/bin/composer
+
+RUN addgroup --gid 1000 matchinguser
+adduser --uid 1000 --gid 1000 --gecos "" --disabled-password matchinguser
