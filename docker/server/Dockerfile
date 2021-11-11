@@ -1,15 +1,24 @@
 FROM php:7.4-apache
 
+ARG user
+ARG uid
+
 RUN a2enmod rewrite
 
-RUN apt-get update && apt-get install -y git unzip zip
+RUN apt-get update && apt-get install -y git unzip zip curl libpq-dev
+
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+
+RUN install-php-extensions bcmath gettext mysqli pdo_mysql zip pdo_pgsql
+
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+# Create system user to run Composer and Artisan Commands
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+
+RUN mkdir -p /home/$user/.composer && \
+    chown -R $user:$user /home/$user
 
 WORKDIR /var/www/html
 
-COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-# RUN install-php-extensions gd pdo_mysql bcmath zip intl opcache
-RUN install-php-extensions bcmath gettext mbstring mysqli pdo pdo_mysql zip opcache
-COPY --from=composer:2.0 /usr/bin/composer /usr/local/bin/composer
-
-RUN addgroup --gid 1000 matchinguser
-adduser --uid 1000 --gid 1000 --gecos "" --disabled-password matchinguser
+USER $user

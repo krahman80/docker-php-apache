@@ -1,11 +1,15 @@
 version: '3.9'
 
 services:
-  apache:
+  app:
     build:
+      args:
+      # replace with your user and uid
+        user: rahman
+        uid: 1000
       context: .
       dockerfile: ./docker/server/Dockerfile
-    container_name: 'apache'
+    container_name: 'app'
     ports:
       - '8020:80'
     working_dir: /var/www/html
@@ -19,7 +23,7 @@ services:
 
 networks:
   proxynet:
-    name: phpapp
+    name: mynet
 
   # postgres:
   #   image: postgres:10.6-alpine
