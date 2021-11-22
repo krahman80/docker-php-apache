@@ -14,7 +14,7 @@ services:
       - '8020:80'
     working_dir: /var/www/html
     volumes:
-      - ./app:/var/www/html
+      - .:/var/www/html
       - ./docker/server/apache/sites-enabled:/etc/apache2/sites-enabled
       - ./docker/server/php/php.ini:/usr/local/etc/php/conf.d/extra-php-config.ini
       - ./docker/server/php/opcache.ini:/usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
