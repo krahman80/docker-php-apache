@@ -5,11 +5,11 @@ ARG uid
 
 RUN a2enmod rewrite
 
-RUN apt-get update && apt-get install -y git unzip zip curl libpq-dev
+RUN apt-get update && apt-get install -y git unzip zip curl libpq-dev sqlite3 libsqlite3-dev
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN install-php-extensions bcmath gettext mysqli pdo_mysql zip pdo_pgsql
+RUN install-php-extensions bcmath gettext mysqli pdo_mysql zip pdo_pgsql pdo_sqlite
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
