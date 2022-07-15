@@ -21,10 +21,6 @@ services:
     networks:
       - proxynet
 
-networks:
-  proxynet:
-    name: mynet
-
   # postgres:
   #   image: postgres:10.6-alpine
   #   restart: always
@@ -46,43 +42,43 @@ networks:
   #   networks:
   #     - proxynet
 
-  # maria-db:
-  #   image: mariadb:10.5.9
-  #   command: --default-authentication-plugin=mysql_native_password
-  #   container_name: 'maria-db'
-  #   restart: always
-  #   ports:
-  #     - '8040:3306'
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: 'root'
-  #     MYSQL_USER: 'homestead'
-  #     MYSQL_PASSWORD: 'user'
-  #     MYSQL_DATABASE: 'user'
-  #   volumes:
-  #     - ./docker/db:/docker-entrypoint-initdb.d  
-  #     - db_data:/var/lib/mysql
-  #     # - './docker/db/db_data:/var/lib/mysql'
-  #     - ./docker/db/mariadb/my.cnf:/etc/mysql/conf.d/my.cnf
-  #   networks:
-  #     - proxynet
+  maria-db:
+    image: mariadb:10.5.9
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: 'maria-db'
+    restart: always
+    ports:
+      - '8040:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: 'homestead'
+      MYSQL_PASSWORD: 'user'
+      MYSQL_DATABASE: 'user'
+    volumes:
+      - ./docker/db:/docker-entrypoint-initdb.d  
+      - db_data:/var/lib/mysql
+      # - './docker/db/db_data:/var/lib/mysql'
+      - ./docker/db/mariadb/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - proxynet
 
-  # adminer:
-  #   image: adminer
-  #   container_name: adminer
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - mariadb
-  #   environment:
-  #     ADMINER_DEFAULT_DB_DRIVER: mysql
-  #     ADMINER_DEFAULT_DB_HOST: mariadb
-  #     # ADMINER_DEFAULT_DB_NAME: homestead
-  #     # ADMINER_DEFAULT_SERVER: mariadb
-  #     ADMINER_DESIGN: nette
-  #     ADMINER_PLUGINS: tables-filter tinymce
-  #   ports:
-  #     - 8030:8080
-  #   networks:
-  #     - proxynet
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: unless-stopped
+    depends_on:
+      - maria-db
+    environment:
+      ADMINER_DESIGN: nette
+      ADMINER_PLUGINS: tables-filter tinymce
+    ports:
+      - 8030:8080
+    networks:
+      - proxynet
 
-# volumes:
-#   db_data:
+volumes:
+  db_data:
+
+networks:
+  proxynet:
+    name: mynet
