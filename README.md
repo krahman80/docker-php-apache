@@ -5,7 +5,7 @@
 ## images list
 - php:7.4-apache
 - postgres:10.6-alpine or
-- mariadb:10.5.9
+- mysql 8.0.29
 - adminer
 
 ## how to use
