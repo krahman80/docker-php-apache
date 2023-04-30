@@ -4,7 +4,7 @@ services:
   app:
     build:
       args:
-      # get your user and uid from system
+        # get your user and uid from system
         user: ${USER}
         uid: ${UID:-1000}
       context: .
@@ -54,8 +54,7 @@ services:
       MYSQL_DATABASE: homestead
       MYSQL_USER: user
       MYSQL_PASSWORD: user
-    volumes: 
-      - ./docker/db:/docker-entrypoint-initdb.d
+    volumes:
       - db_data:/var/lib/mysql
     networks:
       - proxynet
@@ -74,9 +73,9 @@ services:
     networks:
       - proxynet
 
-volumes:
-  db_data:
-
 networks:
   proxynet:
     name: mynet
+
+volumes:
+  db_data:
